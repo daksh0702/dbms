@@ -1,11 +1,13 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./components/home";
+import UserDashboard from "./components/user";
 import Layout from "./hoc/layout";
 const Routes = () => {
   return (
     <Layout>
       <Switch>
+        <Route path="/userdashboard" exact component={UserDashboard} />
         <Route path="/" exact component={Home} />
       </Switch>
     </Layout>
