@@ -20,6 +20,12 @@ class Login extends Component {
         .post("/login", { ...this.state })
         .then(res => {
           console.log(res);
+          window.history.pushState(
+            this.state.USERNAME,
+            "login",
+            "/userdashboard"
+          );
+          window.history.go(0);
         })
         .catch(err => {});
     }

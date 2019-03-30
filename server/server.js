@@ -16,20 +16,26 @@ con.connect(function(err) {
   console.log("Connected!");
 });
 
-app.get("/", (req, res) => {
-  con.query("SELECT * FROM person", (err, rows, fields) => {
+/************************
+/////    BUY          ////
+*************************/
+app.get("/user/all", (req, res) => {
+  con.query("SELECT * FROM product", (err, rows, fields) => {
     if (err) {
       console.log("Error in query");
     } else {
       console.log("Success!\n");
-      rows = { ...rows[0] };
-      console.log(rows);
-      res.send(rows);
+      products = [];
+      for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+      console.log("products", products);
+      res.send(products);
     }
   });
 });
 
-//register user
+/************************
+/////REGISTER & LOGIN ////
+*************************/
 app.post("/register", (req, res) => {
   console.log("REQ_BODY", req.body);
   let values = [
@@ -78,11 +84,11 @@ app.post("/login", (req, res) => {
   console.log(req.body);
   values = [req.body.USERNAME, req.body.PASSWORD];
   con.query(
-    `select * from person where username=? and password=?`,
+    `select * from person where USERNAME=? and PASSWORD=?`,
     values,
     (err, result) => {
       if (err) {
-        console.log("Error in query");
+        console.log("Error in query", result);
       } else {
         console.log("Success!\n");
         console.log("Result:", result);
