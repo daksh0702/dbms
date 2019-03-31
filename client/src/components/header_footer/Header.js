@@ -7,10 +7,6 @@ class Header extends Component {
           <div className="left">
             <div className="logo">TU_SHOP</div>
           </div>
-          <div className="right">
-            {/* <div className="top">{this.showLinks(this.state.user)}</div>
-            <div className="bottom">{this.showLinks(this.state.page)}</div> */}
-          </div>
         </div>
       </header>
     );

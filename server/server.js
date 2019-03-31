@@ -20,17 +20,130 @@ con.connect(function(err) {
 /////    BUY          ////
 *************************/
 app.get("/user/all", (req, res) => {
-  con.query("SELECT * FROM product", (err, rows, fields) => {
-    if (err) {
-      console.log("Error in query");
-    } else {
-      console.log("Success!\n");
-      products = [];
-      for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
-      console.log("products", products);
-      res.send(products);
+  con.query(
+    "SELECT * FROM product where not USERNAME=?",
+    [req.query.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products", products);
+        res.send(products);
+      }
     }
-  });
+  );
+});
+
+app.get("/user/hostel", (req, res) => {
+  con.query(
+    "SELECT * FROM product where TYPE=? and not USERNAME=?",
+    ["HOSTEL", req.query.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products:", products);
+        res.send(products);
+      }
+    }
+  );
+});
+
+app.get("/user/arts", (req, res) => {
+  con.query(
+    "SELECT * FROM product where TYPE=? and not USERNAME=?",
+    ["ARTS", req.query.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products", products);
+        res.send(products);
+      }
+    }
+  );
+});
+
+app.get("/user/electronics", (req, res) => {
+  console.log("req electro", req.query.USERNAME);
+  con.query(
+    "SELECT * FROM product where TYPE=? and not USERNAME=?",
+    ["ELECTRONICS", req.query.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products", products);
+        res.send(products);
+      }
+    }
+  );
+});
+
+app.get("/user/book", (req, res) => {
+  con.query(
+    "SELECT * FROM product where TYPE=? and not USERNAME=?",
+    ["BOOK", req.query.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products", products);
+        res.send(products);
+      }
+    }
+  );
+});
+
+app.get("/user", (req, res) => {
+  console.log("req params", req.query);
+  con.query(
+    "SELECT * FROM person where USERNAME=?",
+    [`${req.query.USERNAME}`],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\nrows:", rows);
+        res.send({ ...rows[0] });
+      }
+    }
+  );
+});
+
+/************************
+/////    SELL          ////
+*************************/
+app.post("/sell", (req, res) => {
+  console.log("REQ BODY:", req.body);
+  let x = req.body;
+  con.query(
+    `insert into product (PRODUCTNO,PRODUCTNAME,TYPE,USERNAME,DESCRIPTION,PRICE,IMAGEURL) values (?,?,?,?,?,?,?)`,
+    ["", x.PRODUCTNAME, x.TYPE, x.USERNAME, x.DESCRIPTION, x.PRICE, x.IMAGEURL],
+    (err, result) => {
+      if (err) {
+        console.log("Error in query for product");
+      } else {
+        console.log("Success");
+        res.send({ uploadSuccess: "true", redirect: "/userdashboard" });
+      }
+    }
+  );
 });
 
 /************************

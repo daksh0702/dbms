@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 class UserDashboard extends Component {
   handleBuy = () => {
-    window.history.pushState({}, "buy", "/userdashboard/buy");
+    window.history.pushState(window.history.state, "buy", "/userdashboard/buy");
     window.history.go(0);
   };
 
   handleSell = () => {
-    window.history.pushState({}, "sell", "/userdashboard/sell");
+    window.history.pushState(
+      window.history.state,
+      "sell",
+      "/userdashboard/sell"
+    );
     window.history.go(0);
   };
   render() {
