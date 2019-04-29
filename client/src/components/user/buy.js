@@ -48,7 +48,7 @@ class Buy extends Component {
     this.state.data.length > 0 ? (
       <div>
         {this.state.data.map((val, i) => (
-          <Card key={i} data={this.state.data[i]} />
+          <Card key={i} data={this.state.data[i]} uname={this.state.USERNAME}/>
         ))}
       </div>
     ) : null;
@@ -57,6 +57,7 @@ class Buy extends Component {
     window.scrollTo(0, 0);
     return (
       <div>
+        <h2>Hello {this.state.USERNAME}</h2>
         <h2>Select Category</h2>
         <ul style={{ cursor: "pointer" }}>
           <li onClick={() => this.handleOnClick("ALL")}>All Categories</li>

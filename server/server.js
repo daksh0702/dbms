@@ -8,7 +8,8 @@ var con = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "",
-  database: "dbms"
+  database: "dbms",
+  multipleStatements: true
 });
 
 con.connect(function(err) {
@@ -126,6 +127,69 @@ app.get("/user", (req, res) => {
   );
 });
 
+/********************************
+/////    SHOW BIDS          ////
+*********************************/
+
+app.post("/showbids", (req, res) => {
+  console.log("req params show bids ", req.body);
+  let x = req.body;
+  con.query(
+    `SELECT * FROM bidding where OWNER=?`,
+    [x.USERNAME],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in show bids");
+      } else {
+        console.log("Success in show bids!\n");
+        products = [];
+        for (i = 0; i < rows.length; i++) products.push({ ...rows[i] });
+        console.log("products", products);
+        res.send(products);
+      }
+    }
+  );
+});
+
+
+app.get("/showdet", (req, res) => {
+  console.log("req params", req.query);
+  con.query(
+    "SELECT * FROM person where USERNAME=?",
+    [`${req.query.USERNAME}`],
+    (err, rows, fields) => {
+      if (err) {
+        console.log("Error in query");
+      } else {
+        console.log("Success!\nrows:", rows);
+        res.send({ ...rows[0] });
+      }
+    }
+  );
+});
+
+
+
+// app.post("/showdet", (req, res) => {
+//   console.log("req params show details ", req.body);
+//   let x = req.body;
+//   con.query(
+//     `SELECT * FROM person where USERNAME=?`,
+//     [x.USERNAME],
+//     (err, rows, fields) => {
+//       if (err) {
+//         console.log("Error in details");
+//       } else {
+//         console.log("Success in details!\n");
+//         product = [];
+//         for (i = 0; i < rows.length; i++) product.push({ ...rows[i] });
+//         console.log("products", product);
+//         res.send(product);
+//       }
+//     }
+//   );
+// });
+
 /************************
 /////    SELL          ////
 *************************/
@@ -133,18 +197,44 @@ app.post("/sell", (req, res) => {
   console.log("REQ BODY:", req.body);
   let x = req.body;
   con.query(
-    `insert into product (PRODUCTNO,PRODUCTNAME,TYPE,USERNAME,DESCRIPTION,PRICE,IMAGEURL) values (?,?,?,?,?,?,?)`,
-    ["", x.PRODUCTNAME, x.TYPE, x.USERNAME, x.DESCRIPTION, x.PRICE, x.IMAGEURL],
+    `insert into product (PRODUCTNO,PRODUCTNAME,TYPE,USERNAME,DESCRIPTION,PRICE,IMAGEURL,MINBID,DATE) values (?,?,?,?,?,?,?,?,?)`,
+    ["", x.PRODUCTNAME, x.TYPE, x.USERNAME, x.DESCRIPTION, x.PRICE, x.IMAGEURL,x.PRICE,x.DATE],
     (err, result) => {
       if (err) {
         console.log("Error in query for product");
       } else {
-        console.log("Success");
+        console.log("Success in sell");
         res.send({ uploadSuccess: "true", redirect: "/userdashboard" });
       }
     }
   );
 });
+
+
+/************************
+/////    BID          ////
+*************************/
+app.post("/bid", (req, res) => {
+  console.log("REQ BODY:", req.body);
+  let x = req.body;
+  con.query(
+    `insert into bidding (PRODUCTNO,BIDDER,BID,OWNER) values (?,?,?,?);
+     UPDATE product SET MINBID=?,BIDDERSNO=BIDDERSNO+1 where PRODUCTNO =?`,
+    //  SELECT count(*) from bidding where=?`,S
+    [x.PRODUCTNO, x.BIDDER, x.BID, x.USERNAME, x.BID, x.PRODUCTNO,x.PRODUCTNO],
+    //[x.BID, x.PRODUCTNO],
+    (err, result) => {
+      if (err) {
+        console.log("Error in query for Bid");
+      } else {
+        console.log("Success in BID");
+        res.send({ uploadSuccess: "true", redirect: '/userdashboard/buy' });
+      }
+    }
+  );
+});
+
+
 
 /************************
 /////REGISTER & LOGIN ////
@@ -203,7 +293,7 @@ app.post("/login", (req, res) => {
       if (err) {
         console.log("Error in query", result);
       } else {
-        console.log("Success!\n");
+        console.log("Success! in login\n");
         console.log("Result:", result);
         res.send("Success");
       }

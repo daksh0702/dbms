@@ -5,6 +5,10 @@ class UserDashboard extends Component {
     window.history.go(0);
   };
 
+  handleBids = () => {
+    window.history.pushState(window.history.state, "bids", "/userdashboard/bids");
+    window.history.go(0);
+  };
   handleSell = () => {
     window.history.pushState(
       window.history.state,
@@ -35,6 +39,7 @@ class UserDashboard extends Component {
         <ul>
           <li onClick={this.handleBuy}>BUY</li>
           <li onClick={this.handleSell}>SELL</li>
+          <li onClick={this.handleBids}>CURRENT BIDS</li>
         </ul>
       </div>
     );

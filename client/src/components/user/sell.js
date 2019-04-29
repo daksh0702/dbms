@@ -8,6 +8,7 @@ class Sell extends Component {
     PRODUCTNAME: "",
     DESCRIPTION: "",
     PRICE: "",
+    DATE:"",
     IMAGEURL: "",
     formSucess: "",
     uploadSuccess: "false"
@@ -19,7 +20,8 @@ class Sell extends Component {
       x.PRODUCTNAME === "" ||
       x.DESCRIPTION === "" ||
       x.PRICE === "" ||
-      x.IMAGEURL === ""
+      x.IMAGEURL === "" ||
+      x.DATE === ""
     ) {
       this.setState({ formSucess: "false" });
     } else {
@@ -100,7 +102,7 @@ class Sell extends Component {
               type="text"
               name="PRODUCTNAME"
               id="pname"
-              placeholder="Product Description"
+              placeholder="Product Name"
               onChange={this.handleChange}
               value={this.state.PRODUCTNAME}
             />
@@ -117,7 +119,7 @@ class Sell extends Component {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="price">Price</Label>
+            <Label for="price">Min Price Expected:</Label>
             <Input
               type="text"
               id="price"
@@ -125,6 +127,18 @@ class Sell extends Component {
               placeholder="Expected"
               onChange={this.handleChange}
               value={this.state.PRICE}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="date">Bid till date:</Label>
+            <Input
+              type="text"
+              id="date"
+              name="DATE"
+              placeholder="dd/mm"
+              value={this.state.DATE}
+              onChange={this.handleChange}
+              
             />
           </FormGroup>
           <FormGroup>
