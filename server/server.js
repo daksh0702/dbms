@@ -295,7 +295,7 @@ app.post("/login", (req, res) => {
       } else {
         console.log("Success! in login\n");
         console.log("Result:", result);
-        res.send("Success");
+        res.send(result);
       }
     }
   );

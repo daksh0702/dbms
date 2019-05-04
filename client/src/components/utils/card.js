@@ -38,6 +38,7 @@ class Card extends Component {
   };
 
   handlChange = event => {
+    event.preventDefault();
     this.setState({ BID: event.target.value });
   };
 
@@ -79,7 +80,7 @@ handlSubmit = (e) => {
       //     "bid placed",
       //     res.redirect
       //   );
-      //  // window.history.go(0);
+       window.history.go(0);
       // }, 2000);
       // return false;
     });
@@ -207,6 +208,7 @@ handlSubmit = (e) => {
                         // placeholder="Expected"
                         onChange={this.handlChange}
                         value={this.state.BID}
+                        onKeyPress={()=>this.handlSubmit()}
                         />{console.log(this.state.BID)}
                       </label>
                       {this.state.formSucess === "false" ? (

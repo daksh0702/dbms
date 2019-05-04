@@ -19,13 +19,21 @@ class Login extends Component {
       axios
         .post("/login", { ...this.state })
         .then(res => {
-          console.log(res);
-          window.history.pushState(
-            this.state.USERNAME,
-            "login",
-            "/userdashboard"
-          );
-          window.history.go(0);
+          console.log("HEY:",res);
+          res=res.data;
+          console.log("RES:",res);
+          if(res.length===0){
+              this.setState({formSuccess:"false"})
+          }
+          else{
+            window.history.pushState(
+              this.state.USERNAME,
+              "login",
+              "/userdashboard"
+            );
+            window.history.go(0);
+          }
+          
         })
         .catch(err => {});
     }
