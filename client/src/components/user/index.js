@@ -6,7 +6,11 @@ class UserDashboard extends Component {
   };
 
   handleBids = () => {
-    window.history.pushState(window.history.state, "bids", "/userdashboard/bids");
+    window.history.pushState(
+      window.history.state,
+      "bids",
+      "/userdashboard/bids"
+    );
     window.history.go(0);
   };
   handleSell = () => {
@@ -18,6 +22,10 @@ class UserDashboard extends Component {
     window.history.go(0);
   };
   render() {
+    if (window.history.state === null) {
+      window.history.pushState({}, "Logout", "/");
+      window.history.go(0);
+    }
     console.log(window.history.state);
     window.scrollTo(0, 0);
     return (

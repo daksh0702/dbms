@@ -48,12 +48,17 @@ class Buy extends Component {
     this.state.data.length > 0 ? (
       <div>
         {this.state.data.map((val, i) => (
-          <Card key={i} data={this.state.data[i]} uname={this.state.USERNAME}/>
+          <Card key={i} data={this.state.data[i]} uname={this.state.USERNAME} />
         ))}
       </div>
     ) : null;
 
   render() {
+    console.log(this.state);
+    if (window.history.state === null) {
+      window.history.pushState({}, "Logout", "/");
+      window.history.go(0);
+    }
     window.scrollTo(0, 0);
     return (
       <div>

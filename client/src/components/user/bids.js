@@ -1,33 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
-import {Button} from "reactstrap";
+import { Button } from "reactstrap";
 import ShowCard from "../utils/showcard";
 class Bids extends Component {
   state = {
     USERNAME: window.history.state,
-    data: [],
+    data: []
     // dets:[],
   };
 
-  handlSubmit = (e) => {
+  handlSubmit = e => {
     console.log("Submitting");
     let x = this.state;
-    // if (
-    //   x.BID === "" ||
-    //   x.BID<this.props.data.MINBID
-    // ) {
-    //   //this.setState({ formSucess: "false" });
-    // } else {
-      //this.setState({ formSucess: "true" });
-      axios.post("/showbids", { ...this.state }).then(res => {
-        // res = res.data;
-        this.setState({ data: res.data });
-        console.log("Show Bids- "+res);
-        // this.setState({ uploadSuccess: res.uploadSuccess});
+    axios
+      .get(`/getbids?USERNAME=${this.state.USERNAME}`)
+      .then(res => {
+        res = res.data;
+        console.log("BIDS:", res);
+        this.setState({ ...this.state, res });
+      })
+      .catch(err => {
+        console.log("ERROR");
       });
-    // }
   };
-
 
   renderCards = () =>
     this.state.data.length > 0 ? (
@@ -39,18 +34,25 @@ class Bids extends Component {
     ) : null;
 
   render() {
+    console.log(this.state);
+    if (this.state.USERNAME === null) {
+      window.history.pushState({}, "Logout", "/");
+      window.history.go(0);
+    }
     window.scrollTo(0, 0);
     return (
       <div>
         <h2>Hello {this.state.USERNAME}</h2>
-    
+
         {/* <Button onClick={() => this.handlDets() } color="primary" > */}
-        <Button onClick={() => this.handlSubmit()}
-            color="primary"
-            style={{ float: "center" }}>
-            Show Bids
-            </Button>
-            {/* </Button> */}
+        <Button
+          onClick={() => this.handlSubmit()}
+          color="primary"
+          style={{ float: "center" }}
+        >
+          Show Bids
+        </Button>
+        {/* </Button> */}
         <hr />
         <div style={{ marginBottom: "10px" }}>
           <div

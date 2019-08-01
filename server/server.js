@@ -151,24 +151,21 @@ app.post("/showbids", (req, res) => {
   );
 });
 
-
-app.get("/showdet", (req, res) => {
+app.get("/getbids", (req, res) => {
   console.log("req params", req.query);
   con.query(
-    "SELECT * FROM person where USERNAME=?",
+    "SELECT * FROM bidding where BIDDER=?",
     [`${req.query.USERNAME}`],
     (err, rows, fields) => {
       if (err) {
         console.log("Error in query");
       } else {
         console.log("Success!\nrows:", rows);
-        res.send({ ...rows[0] });
+        res.send({ ...rows[rows.length - 1] });
       }
     }
   );
 });
-
-
 
 // app.post("/showdet", (req, res) => {
 //   console.log("req params show details ", req.body);
@@ -198,7 +195,17 @@ app.post("/sell", (req, res) => {
   let x = req.body;
   con.query(
     `insert into product (PRODUCTNO,PRODUCTNAME,TYPE,USERNAME,DESCRIPTION,PRICE,IMAGEURL,MINBID,DATE) values (?,?,?,?,?,?,?,?,?)`,
-    ["", x.PRODUCTNAME, x.TYPE, x.USERNAME, x.DESCRIPTION, x.PRICE, x.IMAGEURL,x.PRICE,x.DATE],
+    [
+      "",
+      x.PRODUCTNAME,
+      x.TYPE,
+      x.USERNAME,
+      x.DESCRIPTION,
+      x.PRICE,
+      x.IMAGEURL,
+      x.PRICE,
+      x.DATE
+    ],
     (err, result) => {
       if (err) {
         console.log("Error in query for product");
@@ -210,7 +217,6 @@ app.post("/sell", (req, res) => {
   );
 });
 
-
 /************************
 /////    BID          ////
 *************************/
@@ -221,20 +227,18 @@ app.post("/bid", (req, res) => {
     `insert into bidding (PRODUCTNO,BIDDER,BID,OWNER) values (?,?,?,?);
      UPDATE product SET MINBID=?,BIDDERSNO=BIDDERSNO+1 where PRODUCTNO =?`,
     //  SELECT count(*) from bidding where=?`,S
-    [x.PRODUCTNO, x.BIDDER, x.BID, x.USERNAME, x.BID, x.PRODUCTNO,x.PRODUCTNO],
+    [x.PRODUCTNO, x.BIDDER, x.BID, x.USERNAME, x.BID, x.PRODUCTNO, x.PRODUCTNO],
     //[x.BID, x.PRODUCTNO],
     (err, result) => {
       if (err) {
         console.log("Error in query for Bid");
       } else {
         console.log("Success in BID");
-        res.send({ uploadSuccess: "true", redirect: '/userdashboard/buy' });
+        res.send({ uploadSuccess: "true", redirect: "/userdashboard/buy" });
       }
     }
   );
 });
-
-
 
 /************************
 /////REGISTER & LOGIN ////

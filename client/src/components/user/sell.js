@@ -8,7 +8,7 @@ class Sell extends Component {
     PRODUCTNAME: "",
     DESCRIPTION: "",
     PRICE: "",
-    DATE:"",
+    DATE: "",
     IMAGEURL: "",
     formSucess: "",
     uploadSuccess: "false"
@@ -53,6 +53,10 @@ class Sell extends Component {
   };
   render() {
     console.log(this.state);
+    if (this.state.USERNAME === null) {
+      window.history.pushState({}, "Logout", "/");
+      window.history.go(0);
+    }
     return (
       <div style={{ marginLeft: "10px" }}>
         <h2>Please Enter the product details.</h2>
@@ -138,7 +142,6 @@ class Sell extends Component {
               placeholder="dd/mm"
               value={this.state.DATE}
               onChange={this.handleChange}
-              
             />
           </FormGroup>
           <FormGroup>

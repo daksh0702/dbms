@@ -6,6 +6,7 @@ import Layout from "./hoc/layout";
 import Buy from "./components/user/buy";
 import Sell from "./components/user/sell";
 import Bids from "./components/user/bids";
+
 const Routes = () => {
   return (
     <Layout>
@@ -15,6 +16,7 @@ const Routes = () => {
         <Route path="/userdashboard/bids" exact component={Bids} />
         <Route path="/userdashboard" exact component={UserDashboard} />
         <Route path="/" exact component={Home} />
+        <Route path="*" component={Home} />
       </Switch>
     </Layout>
   );
